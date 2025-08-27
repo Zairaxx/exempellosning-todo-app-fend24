@@ -22,13 +22,16 @@ function App() {
     },{
       name:"Ofelia",
       age:44,
-      
+      //Här saknas location objektet.
     }])
-
+  const [showList, setShowList] = useState(false);
+  
   return(
     <>
+    <button onClick={() => {setShowList(!showList)}}>Toggle List</button>
       <h1>Conditional Rendering & Component Lifecycle</h1>
-      <TestComponent testData={testData}/>
+      
+      {showList && <TestComponent testData={testData}/>}
     </>
   )
 }

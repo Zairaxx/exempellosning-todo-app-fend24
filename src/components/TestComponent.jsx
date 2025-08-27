@@ -1,14 +1,22 @@
+import { useEffect, useState } from "react"
+import User from "./User"
 const TestComponent = ({testData}) => {
+    //Mounting
+    useEffect(() => {
+        console.log("Component is mounting!");
+
+        //Unmounting
+        return () => {
+            console.log("Component is unmounting")
+        }
+    }, [])
+
+
 
     return(
         <>
             <h2>Test</h2>
-            {testData.map(user => <div>
-                <p>Namn: {user.name}</p>
-                {user.age < 30 ? <p>Ålder: {user.age}</p> : <p>Ålder:30+</p>}
-                <p>Stad: {user.location?.city?.zipCode}</p>
-            </div>)}
-            
+            {testData.map((user,i) => <User user={user} key={i}/>)}
         </>
     )
 }
