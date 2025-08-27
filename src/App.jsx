@@ -1,37 +1,43 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import TestComponent from './components/TestComponent'
 
 function App() {
 
-  const [testData, setTestData] = useState([{
-    name:"Brandon",
-    age: 31,
-    location: {
-      city: "Stockholm",
-      country: "Sweden"
-    }
-    },
-    {
-      name:"Oliver",
-      age:22,
-      location: {
-        city: "Amsterdam",
-        country: "Netherlands"
-      }
-    },{
-      name:"Ofelia",
-      age:44,
-      //Här saknas location objektet.
-    }])
   const [showList, setShowList] = useState(false);
+  const [users,setUsers] = useState([])
+  //Mounting
+
+
+  const getUsers = () => {
+    
+  }
+
+  useEffect(() => {
+    if(!sessionStorage.getItem("users")) {
+      const fetchData = async () => {
+          let response = await fetch("https://randomuser.me/api/?results=5");
+          let json = await response.json();
+          setUsers(json.results);
+      }
+        fetchData();
+      }
+      else {
+        setUsers(sessionStorage.getItem("users"))
+      }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("users", users);
+  },[users])
   
+
   return(
     <>
     <button onClick={() => {setShowList(!showList)}}>Toggle List</button>
       <h1>Conditional Rendering & Component Lifecycle</h1>
-      
-      {showList && <TestComponent testData={testData}/>}
+
+      {showList && <TestComponent users={users}/>}
     </>
   )
 }
